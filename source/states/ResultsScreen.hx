@@ -148,14 +148,14 @@ class ResultsScreen extends MusicBeatSubstate
 
 		if (PlayState.isStoryMode)
 		{
-			FlxTween.num(0, ${campScore}, 3.0, {type: FlxTweenType.ONESHOT, ease: FlxEase.cubeIn}, updateScoreResult);
-			FlxTween.num(0, ${campMisses}, 3.0, {type: FlxTweenType.ONESHOT, ease: FlxEase.cubeIn}, updateMissResult);
+			FlxTween.num(0, campScore, 3.0, {type: FlxTweenType.ONESHOT, ease: FlxEase.cubeIn}, updateScoreResult);
+			FlxTween.num(0, campMisses, 3.0, {type: FlxTweenType.ONESHOT, ease: FlxEase.cubeIn}, updateMissResult);
 		}
 		else
 		{
-			FlxTween.num(0, ${score}, 3.0, {type: FlxTweenType.ONESHOT, ease: FlxEase.cubeIn}, updateScoreResult);
-			FlxTween.num(0, ${misses}, 3.0, {type: FlxTweenType.ONESHOT, ease: FlxEase.cubeIn}, updateMissResult);
-			FlxTween.num(0, ${hits}, 3.0, {type: FlxTweenType.ONESHOT, ease: FlxEase.cubeIn}, updateNotehitResult);
+			FlxTween.num(0, score, 3.0, {type: FlxTweenType.ONESHOT, ease: FlxEase.cubeIn}, updateScoreResult);
+			FlxTween.num(0, misses, 3.0, {type: FlxTweenType.ONESHOT, ease: FlxEase.cubeIn}, updateMissResult);
+			FlxTween.num(0, hits, 3.0, {type: FlxTweenType.ONESHOT, ease: FlxEase.cubeIn}, updateNotehitResult);
 		}
 
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];

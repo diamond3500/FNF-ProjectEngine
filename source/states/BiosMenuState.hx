@@ -1,5 +1,7 @@
 package states;
 
+import flixel.system.debug.console.Console;
+import flixel.tweens.misc.NumTween;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.display.FlxBackdrop;
@@ -48,8 +50,20 @@ class BiosMenuState extends MusicBeatState {
 
 	var gradient:FlxSprite;
 
+	var newColor:FlxColor;
+	var colorTween:FlxTween;
+
+	var upArrowTween:FlxTween;
+	var downArrowTween:FlxTween;
+
 	var badgeImg:FlxSprite;
 	var badgetextx:FlxText;
+
+	var upArrow:FlxSprite;
+	var downArrow:FlxSprite;
+
+	var upArrowYpos:Int;
+	var downArrowYpos:Int;
 
 	var biosJSON:BiosMenuJSON;
 
@@ -102,8 +116,19 @@ class BiosMenuState extends MusicBeatState {
 		descriptionText.borderSize = 2.5;
         add(descriptionText);
 
-		var arrows = new FlxSprite(218, 30).loadGraphic(Paths.image('credits/bios/assets/biosThing'));
-		add(arrows);
+		// var arrows = new FlxSprite(218, 30).loadGraphic(Paths.image('credits/bios/assets/biosThing'));
+		// add(arrows);
+
+		upArrowYpos = 30;
+		downArrowYpos = 653;
+
+		upArrow = new FlxSprite(218, upArrowYpos).loadGraphic(Paths.image('credits/bios/assets/biosArrow'));
+		downArrow = new FlxSprite(218, downArrowYpos).loadGraphic(Paths.image('credits/bios/assets/biosArrow'));
+
+		downArrow.angle = 180;
+
+		add(upArrow);
+		add(downArrow);
 
 		super.create();
 	}
@@ -129,12 +154,34 @@ class BiosMenuState extends MusicBeatState {
 				remove(badgeImg);
 				badgeImg = new FlxSprite(1086, 451).loadGraphic(Paths.image(biosJSON.badgeImages[currentIndex]));
 				add(badgeImg);
+
 				descriptionText.text = biosJSON.descriptions[currentIndex];
 				characterName.text = biosJSON.people[currentIndex];
 				badgetextx.text = biosJSON.badgeText[currentIndex];
-				background.color = CoolUtil.colorFromString(biosJSON.backgroundColor[currentIndex]);
-				FlxG.sound.play(Paths.sound('scrollMenu'));  
-	
+
+				upArrow.setPosition(upArrow.x, upArrow.y - 10);
+				if(upArrowTween != null) 
+					{
+						upArrowTween.cancel();
+						upArrow.y = upArrowYpos - 10;
+					}
+				upArrowTween = FlxTween.tween(upArrow, {y: upArrow.y + 10}, 0.2, {ease: FlxEase.quadInOut, onComplete: function(twn:FlxTween) {
+					upArrowTween = null;
+				}});
+
+				newColor = CoolUtil.colorFromString(biosJSON.backgroundColor[currentIndex]);
+				if(background.color != newColor) {
+					if (colorTween != null) {
+						colorTween.cancel();
+					}
+					FlxTween.color(background, 0.5, background.color, newColor,{
+						onComplete: function(twn:FlxTween) {
+							colorTween = null;
+						}
+					});
+				}
+				// background.color = CoolUtil.colorFromString(biosJSON.backgroundColor[currentIndex]);
+				FlxG.sound.play(Paths.sound('scrollMenu'));
 			}
 			else if (controls.UI_DOWN_P)
 			{
@@ -150,10 +197,33 @@ class BiosMenuState extends MusicBeatState {
 				remove(badgeImg);
 				badgeImg = new FlxSprite(1086, 451).loadGraphic(Paths.image(biosJSON.badgeImages[currentIndex]));
 				add(badgeImg);
+
 				descriptionText.text = biosJSON.descriptions[currentIndex];
 				characterName.text = biosJSON.people[currentIndex];  
 				badgetextx.text = biosJSON.badgeText[currentIndex];
-				background.color = CoolUtil.colorFromString(biosJSON.backgroundColor[currentIndex]);
+
+				downArrow.setPosition(downArrow.x, downArrow.y + 10);
+				if(downArrowTween != null) 
+					{
+						downArrowTween.cancel();
+						downArrow.y = downArrowYpos + 10;
+					}
+				downArrowTween = FlxTween.tween(downArrow, {y: downArrow.y - 10}, 0.2, {ease: FlxEase.quadInOut, onComplete: function(twn:FlxTween) {
+					downArrowTween = null;
+				}});
+
+				newColor = CoolUtil.colorFromString(biosJSON.backgroundColor[currentIndex]);
+				if(background.color != newColor) {
+					if (colorTween != null) {
+						colorTween.cancel();
+					}
+					FlxTween.color(background, 0.5, background.color, newColor,{
+						onComplete: function(twn:FlxTween) {
+							colorTween = null;
+						}
+					});
+				}
+				// background.color = CoolUtil.colorFromString(biosJSON.backgroundColor[currentIndex]);
 				FlxG.sound.play(Paths.sound('scrollMenu'));	
 			}
 			if (controls.BACK)

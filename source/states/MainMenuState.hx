@@ -102,6 +102,7 @@ class MainMenuState extends MusicBeatState
 		add(grid);
 
 		mainSide = new FlxSprite(0, 0).loadGraphic(Paths.image('mic-d-up/Main_Side'));
+		mainSide.antialiasing = ClientPrefs.data.antialiasing;
 		add(mainSide);
 
 		menuItems = new FlxTypedGroup<FlxSprite>();
@@ -192,6 +193,7 @@ class MainMenuState extends MusicBeatState
 				}
 				FlxTween.tween(credits, {x: 935, y: 522}, 0.1, {ease: FlxEase.quadInOut});
 				if (FlxG.mouse.justPressed) {
+					FlxTween.tween(FlxG.camera, {y: -bg.height}, 0.5, {ease: FlxEase.quadInOut, onComplete: function(t:FlxTween){
 						switch (menuJSON.creditsType) {
 						
 							case 'Credits':
@@ -201,7 +203,9 @@ class MainMenuState extends MusicBeatState
 							default:
 								MusicBeatState.switchState(new BiosMenuState());
 						}
-					}
+					}});
+					FlxG.sound.play(Paths.sound('confirmMenu'));
+				}
 			}
 			else
 			{
@@ -219,7 +223,9 @@ class MainMenuState extends MusicBeatState
 		
 					if (FlxG.mouse.justPressed)
 					{
-						MusicBeatState.switchState(new ModsMenuState());
+						FlxTween.tween(FlxG.camera, {y: bg.height}, 0.5, {ease: FlxEase.quadInOut, onComplete: function(t:FlxTween){
+							MusicBeatState.switchState(new ModsMenuState());
+						}});
 						FlxG.sound.play(Paths.sound('confirmMenu'));
 					}
 				}
